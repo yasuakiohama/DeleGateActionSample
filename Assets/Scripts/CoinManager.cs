@@ -7,9 +7,9 @@ using System.Reflection;
 public class CoinManager : MonoBehaviour
 {
     private const string COIN_KEY = "Coin";
-    public UnityEvent OnChangeCoin;
+    public Action<int> OnChangeCoin = (a) => {};
 
-    void Awake()
+    public void Init()
     {
         ChangeCoin (0);
     }
@@ -56,15 +56,6 @@ public class CoinManager : MonoBehaviour
     {
         PlayerPrefs.SetInt (COIN_KEY, coin);
         PlayerPrefs.Save ();
-        ChangeCoinInvoke ();
-    }
-
-    private void ChangeCoinInvoke()
-    {
-        for (int i = 0; i < OnChangeCoin.GetPersistentEventCount (); i++) {
-            MonoBehaviour listener = OnChangeCoin.GetPersistentTarget (i) as MonoBehaviour;
-            MethodInfo methodInfo = listener.GetType ().GetMethod (OnChangeCoin.GetPersistentMethodName (i));
-            methodInfo.Invoke (listener, new object[]{ PlayerPrefs.GetInt (COIN_KEY, 0) });
-        }
+        OnChangeCoin (PlayerPrefs.GetInt (COIN_KEY, 0));
     }
 }
