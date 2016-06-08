@@ -8,13 +8,11 @@ public class CoinText : MonoBehaviour
 
     void Awake ()
     {
-        DeleGateAction.OnCoinChange += OnCoinChange;
         coinText = transform.GetComponent<Text> ();
-        DeleGateAction.CoinChange ();
     }
 
-    private void OnCoinChange(int coin)
+    public void OnCoinChange(int coin)
     {
-        coinText.text = "coin:" + coin.ToString ();
+        coinText.text = "所持金:" + coin.ToString ();
     }
 }
